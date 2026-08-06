@@ -3,23 +3,31 @@
 	"version": "0.81.1",
 	"description": "Node sqlite storage backend for @earendil-works/pi-agent-core sessions",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "./lib-commonjs/index.js",
+	"module": "./lib/index.js",
+	"types": "./lib/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"types": {
+				"import": "./lib/index.d.ts",
+				"require": "./lib-commonjs/index.d.ts"
+			},
+			"import": "./lib/index.js",
+			"require": "./lib-commonjs/index.js"
 		}
 	},
 	"files": [
-		"dist",
+		"lib",
+		"lib-commonjs",
 		"README.md",
 		"CHANGELOG.md"
 	],
 	"scripts": {
-		"clean": "node -e \"import('node:fs/promises').then(fs=>fs.rm('dist',{recursive:true,force:true}))\"",
-		"build": "tsgo -p tsconfig.build.json && node ./scripts/prepare-dist.mjs copy-sqlite-migrations",
-		"prepublishOnly": "npm run clean && npm run build"
+		"clean": "shx rm -rf lib lib-commonjs",
+		"build": "fluentui-scripts build",
+		"build-cjs": "node scripts/build-pkg.cjs --cjs",
+		"build-esm": "node scripts/build-pkg.cjs --esm",
+		"prepublishOnly": "yarn run clean && yarn run build"
 	},
 	"author": "Earendil Works",
 	"license": "MIT",
@@ -32,7 +40,13 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@earendil-works/pi-ai": "^0.81.1",
-		"@earendil-works/pi-agent-core": "^0.81.1"
+		"@earendil-works/pi-agent-core": "workspace:*",
+		"@earendil-works/pi-ai": "workspace:*"
+	},
+	"devDependencies": {
+		"@fluentui-react-native/scripts": "workspace:*",
+		"@typescript/native-preview": "catalog:current",
+		"esbuild": "catalog:pi",
+		"shx": "catalog:pi"
 	}
 }

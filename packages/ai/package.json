@@ -3,74 +3,103 @@
 	"version": "0.81.1",
 	"description": "Unified LLM API with automatic model discovery and provider configuration",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "./lib-commonjs/index.js",
+	"module": "./lib/index.js",
+	"types": "./lib/index.d.ts",
 	"sideEffects": [
-		"./dist/compat.js",
-		"./dist/images.js",
-		"./dist/providers/images/register-builtins.js"
+		"./lib/compat.js",
+		"./lib/images.js",
+		"./lib/providers/images/register-builtins.js"
 	],
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"types": {
+				"import": "./lib/index.d.ts",
+				"require": "./lib-commonjs/index.d.ts"
+			},
+			"import": "./lib/index.js",
+			"require": "./lib-commonjs/index.js"
 		},
 		"./compat": {
-			"types": "./dist/compat.d.ts",
-			"import": "./dist/compat.js"
+			"types": {
+				"import": "./lib/compat.d.ts",
+				"require": "./lib-commonjs/compat.d.ts"
+			},
+			"import": "./lib/compat.js",
+			"require": "./lib-commonjs/compat.js"
 		},
 		"./providers/*": {
-			"types": "./dist/providers/*.d.ts",
-			"import": "./dist/providers/*.js"
+			"types": {
+				"import": "./lib/providers/*.d.ts",
+				"require": "./lib-commonjs/providers/*.d.ts"
+			},
+			"import": "./lib/providers/*.js",
+			"require": "./lib-commonjs/providers/*.js"
 		},
 		"./api/*": {
-			"types": "./dist/api/*.d.ts",
-			"import": "./dist/api/*.js"
+			"types": {
+				"import": "./lib/api/*.d.ts",
+				"require": "./lib-commonjs/api/*.d.ts"
+			},
+			"import": "./lib/api/*.js",
+			"require": "./lib-commonjs/api/*.js"
 		},
 		"./oauth": {
-			"types": "./dist/oauth.d.ts",
-			"import": "./dist/oauth.js"
+			"types": {
+				"import": "./lib/oauth.d.ts",
+				"require": "./lib-commonjs/oauth.d.ts"
+			},
+			"import": "./lib/oauth.js",
+			"require": "./lib-commonjs/oauth.js"
 		},
 		"./bedrock-provider": {
-			"types": "./dist/bedrock-provider.d.ts",
-			"import": "./dist/bedrock-provider.js"
+			"types": {
+				"import": "./lib/bedrock-provider.d.ts",
+				"require": "./lib-commonjs/bedrock-provider.d.ts"
+			},
+			"import": "./lib/bedrock-provider.js",
+			"require": "./lib-commonjs/bedrock-provider.js"
 		},
 		"./bun-oauth": {
-			"types": "./dist/bun-oauth.d.ts",
-			"import": "./dist/bun-oauth.js"
+			"types": {
+				"import": "./lib/bun-oauth.d.ts",
+				"require": "./lib-commonjs/bun-oauth.d.ts"
+			},
+			"import": "./lib/bun-oauth.js",
+			"require": "./lib-commonjs/bun-oauth.js"
 		}
 	},
-	"bin": {
-		"pi-ai": "dist/cli.js"
-	},
+	"bin": "lib/cli.js",
 	"files": [
-		"dist",
+		"lib",
+		"lib-commonjs",
 		"README.md"
 	],
 	"scripts": {
-		"clean": "shx rm -rf dist",
+		"clean": "shx rm -rf lib lib-commonjs",
 		"generate-models": "node scripts/generate-models.ts --strict",
 		"hydrate-model-data": "node scripts/generate-models.ts --strict --data-only",
 		"generate-model-catalog": "node scripts/generate-models.ts --strict --json-only --json-output ../../.artifacts/model-catalog",
 		"generate-image-models": "node scripts/generate-image-models.ts --strict",
 		"check:model-data": "node scripts/check-model-data.ts",
-		"build": "npm run generate-models && npm run build:offline",
-		"build:offline": "npm run check:model-data && tsgo -p tsconfig.build.json && shx rm -rf dist/providers/data && shx cp -r src/providers/data dist/providers/data",
+		"build": "fluentui-scripts build",
+		"build-cjs": "node scripts/build-pkg.cjs --cjs",
+		"build-esm": "node scripts/build-pkg.cjs --esm",
 		"test": "vitest --run",
-		"prepublishOnly": "npm run clean && npm run build"
+		"prepublishOnly": "yarn run clean && yarn run build"
 	},
 	"dependencies": {
-		"@anthropic-ai/sdk": "0.91.1",
-		"@aws-sdk/client-bedrock-runtime": "3.1048.0",
-		"@google/genai": "1.52.0",
-		"@mistralai/mistralai": "2.2.6",
-		"@opentelemetry/api": "1.9.0",
-		"@smithy/node-http-handler": "4.7.3",
-		"http-proxy-agent": "7.0.2",
-		"https-proxy-agent": "7.0.6",
-		"openai": "6.26.0",
-		"partial-json": "0.1.7",
-		"typebox": "1.1.38"
+		"@anthropic-ai/sdk": "catalog:pi",
+		"@aws-sdk/client-bedrock-runtime": "catalog:pi",
+		"@google/genai": "catalog:pi",
+		"@mistralai/mistralai": "catalog:pi",
+		"@opentelemetry/api": "catalog:pi",
+		"@smithy/node-http-handler": "catalog:pi",
+		"http-proxy-agent": "catalog:pi",
+		"https-proxy-agent": "catalog:pi",
+		"openai": "catalog:pi",
+		"partial-json": "catalog:pi",
+		"typebox": "catalog:pi"
 	},
 	"keywords": [
 		"ai",
@@ -93,8 +122,12 @@
 		"node": ">=22.19.0"
 	},
 	"devDependencies": {
-		"@types/node": "24.12.4",
-		"canvas": "3.2.3",
-		"vitest": "4.1.9"
+		"@fluentui-react-native/scripts": "workspace:*",
+		"@types/node": "catalog:current",
+		"@typescript/native-preview": "catalog:current",
+		"canvas": "catalog:pi",
+		"esbuild": "catalog:pi",
+		"shx": "catalog:pi",
+		"vitest": "catalog:current"
 	}
 }

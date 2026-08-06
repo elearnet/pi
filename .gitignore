@@ -8,6 +8,10 @@ dist/
 packages/*/dist/
 packages/*/dist-chrome/
 packages/*/dist-firefox/
+packages/*/lib/
+packages/*/lib-commonjs/
+packages/*/*/lib/
+packages/*/*/lib-commonjs/
 packages/ai/src/providers/data/
 packages/ai/src/providers/.model-generation-*/
 *.cpuprofile

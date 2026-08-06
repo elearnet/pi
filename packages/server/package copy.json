@@ -23,7 +23,7 @@
 		"clean": "shx rm -rf dist",
 		"dev": "tsgo -p tsconfig.build.json --watch --preserveWatchOutput",
 		"build": "tsgo -p tsconfig.build.json && shx chmod +x dist/cli.js",
-		"prepublishOnly": "yarn run clean && yarn run build"
+		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"keywords": [
 		"pi",
@@ -40,9 +40,9 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@earendil-works/pi-coding-agent": "workspace:*"
+		"@earendil-works/pi-coding-agent": "^0.81.1"
 	},
 	"devDependencies": {
-		"shx": "catalog:pi"
+		"shx": "0.4.0"
 	}
 }

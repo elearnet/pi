@@ -3,36 +3,47 @@
 	"version": "0.81.1",
 	"description": "General-purpose agent with transport abstraction, state management, and attachment support",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "./lib-commonjs/index.js",
+	"types": "./lib/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"types": {
+				"import": "./lib/index.d.ts",
+				"require": "./lib-commonjs/index.d.ts"
+			},
+			"import": "./lib/index.js",
+			"require": "./lib-commonjs/index.js"
 		},
 		"./node": {
-			"types": "./dist/node.d.ts",
-			"import": "./dist/node.js"
+			"types": {
+				"import": "./lib/node.d.ts",
+				"require": "./lib-commonjs/node.d.ts"
+			},
+			"import": "./lib/node.js",
+			"require": "./lib-commonjs/node.js"
 		},
 		"./package.json": "./package.json"
 	},
 	"files": [
-		"dist",
+		"lib",
+		"lib-commonjs",
 		"README.md"
 	],
 	"scripts": {
-		"clean": "shx rm -rf dist",
-		"build": "tsgo -p tsconfig.build.json",
+		"clean": "shx rm -rf lib lib-commonjs",
+		"build": "fluentui-scripts build",
+		"build-cjs": "node scripts/build-pkg.cjs --cjs",
+		"build-esm": "node scripts/build-pkg.cjs --esm",
 		"test": "vitest --run",
 		"test:harness": "vitest --run --config vitest.harness.config.ts",
 		"coverage:harness": "vitest --run --config vitest.harness.config.ts --coverage",
-		"prepublishOnly": "npm run build"
+		"prepublishOnly": "yarn run build"
 	},
 	"dependencies": {
-		"@earendil-works/pi-ai": "^0.81.1",
-		"ignore": "7.0.5",
-		"typebox": "1.1.38",
-		"yaml": "2.9.0"
+		"@earendil-works/pi-ai": "workspace:*",
+		"ignore": "catalog:pi",
+		"typebox": "catalog:pi",
+		"yaml": "catalog:pi"
 	},
 	"keywords": [
 		"ai",
@@ -52,9 +63,12 @@
 		"node": ">=22.19.0"
 	},
 	"devDependencies": {
-		"@types/node": "24.12.4",
-		"@vitest/coverage-v8": "4.1.9",
-		"typescript": "5.9.3",
-		"vitest": "4.1.9"
+		"@fluentui-react-native/scripts": "workspace:*",
+		"@types/node": "catalog:current",
+		"@typescript/native-preview": "catalog:current",
+		"@vitest/coverage-v8": "catalog:pi",
+		"shx": "catalog:pi",
+		"typescript": "catalog:current",
+		"vitest": "catalog:current"
 	}
 }

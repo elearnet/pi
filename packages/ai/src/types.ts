@@ -9,10 +9,8 @@ import type { OpenAICompletionsOptions } from "./api/openai-completions.ts";
 import type { OpenAIResponsesOptions } from "./api/openai-responses.ts";
 import type { PiMessagesOptions } from "./api/pi-messages.ts";
 import type { AssistantMessageDiagnostic } from "./utils/diagnostics.ts";
-import type { AssistantMessageEventStream } from "./utils/event-stream.ts";
-
-export type { AssistantMessageEventStream } from "./utils/event-stream.ts";
-
+import { AssistantMessageEventStream } from "./utils/event-stream.ts";
+export { AssistantMessageEventStream };
 export type KnownApi =
 	| "openai-completions"
 	| "mistral-conversations"
